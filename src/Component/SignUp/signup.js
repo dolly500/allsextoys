@@ -24,28 +24,28 @@ class SignUp extends Component {
   render() {
     return (
       <div>
-        <h2>Sign Up</h2>
+        <h2 style={{textAlign: 'center'}}>Sign Up</h2>
         <form onSubmit={this.handleSubmit}>
         <input
             type="text"
             name="name"
             value={this.state.name}
             onChange={this.handleChange}
-            placeholder="Enter Your Full Name "
+            placeholder="Full Name "
           />
           <input
             type="text"
             name="phonenumber"
             value={this.state.phonenumber}
             onChange={this.handleChange}
-            placeholder="Enter Your Phone Number"
+            placeholder="Phone Number"
           />
           <input
             type="email"
             name="email"
             value={this.state.email}
             onChange={this.handleChange}
-            placeholder="Email"
+            placeholder="Email Address"
           />
           <input
             type="password"

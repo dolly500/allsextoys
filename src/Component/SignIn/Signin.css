@@ -30,11 +30,11 @@ body {
   }
   
   input {
-    width: 100%;
+    width: 130%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 7px;
     outline: none;
   }
   
@@ -43,11 +43,19 @@ body {
     color: #fff;
     padding: 10px;
     border: none;
-    border-radius: 3px;
+    border-radius: 7px;
     cursor: pointer;
+    width: 8vw;
   }
   
   button:hover {
     background-color: #0056b3;
+  }
+
+  @media screen and (max-width: 768px) {
+    button{
+      border-radius: 7px;
+      width: 20vw;
+    }
   }
   
