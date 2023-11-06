@@ -1,59 +1,54 @@
 import React, { useEffect, useState } from 'react'
 import './home.css'
 import { Link } from 'react-router-dom'
-import Homeproduct from './home_product'
 import { AiFillEye, AiFillHeart, AiOutlineShoppingCart} from "react-icons/ai";
 import {BiLogoFacebook, BiLogoTwitter, BiLogoInstagram, BiLogoYoutube} from "react-icons/bi";
+import axios from 'axios'
+
 const Home = ({addtocart}) => {
   // Product category
   const [newProduct, setNewProduct] =  useState([])
-  const [featuredProduct, setFeaturdProduct] =  useState([])
+  const [featuredProduct, setFeaturedProduct] =  useState([])
   const [topProduct, setTopProduct] =  useState([])
-  //Tranding Product
-  const [trendingProduct, setTrendingProduct] = useState(Homeproduct)
-  // Filter of tranding product
-  const filtercate = (x) => 
-  {
-    const filterproduct = Homeproduct.filter((curElm) => 
-    {
-      return curElm.type === x
-    })
-    setTrendingProduct(filterproduct)
-  }
-  //All Trending Product
-  const allTrendingProduct = () =>
-  {
-    setTrendingProduct(Homeproduct)
-  }
+  const [trendingProduct, setTrendingProduct] = useState([])
+  const [categories, setCategories] = useState([]);
 
-  //Product Type
-  useEffect(() => 
-  {
-    productcategory()
-  })
-  const productcategory = () => 
-  {
-    // New Product
-    const newcategory = Homeproduct.filter((x) => 
-    {
-      return x.type === 'new'
-    })
-    setNewProduct(newcategory)
 
-    // Featured Product
-    const featuredcategory = Homeproduct.filter((x) => 
-    {
-      return x.type === 'featured'
-    })
-    setFeaturdProduct(featuredcategory)
+    // Define the filtercate function
+    const filtercate = (category) => {
+      // You can use this function to filter products based on the selected category
+      const filteredProducts = trendingProduct.filter((product) => product.category === category);
+      setTrendingProduct(filteredProducts);
+    };
 
-    // Top Product
-    const topcategory = Homeproduct.filter((x) => 
-    {
-      return x.type === 'top'
-    })
-    setTopProduct(topcategory)
-  }
+  useEffect(() => {
+    // Make a GET request using Axios
+    axios.get('')
+      .then((response) => {
+
+        const data = response.data;
+
+        setNewProduct(data.newProduct);
+        setFeaturedProduct(data.featuredProduct);
+        setTopProduct(data.topProduct);
+        setTrendingProduct(data.trendingProduct);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  
+  
+    // Make a separate GET request for categories
+    axios.get('')
+      .then((response) => {
+        // Update the categories state variable with the category data from the response.
+        const categoryData = response.data;
+        setCategories(categoryData);
+      })
+      .catch((error) => {
+        console.error('Error fetching category data:', error);
+      });
+  }, []);
   return (
     <>
     <div className='home'>
@@ -69,24 +64,26 @@ const Home = ({addtocart}) => {
             <div className='left_box'>
               <div className='header'>
                 <div className='heading'>
-                  <h2 onClick={() => allTrendingProduct ()}>trending product</h2>
+                  <h2 onClick={() => setTrendingProduct()}>trending product</h2>
                 </div>
                 <div className='cate'>
-                  <h3 onClick={() => filtercate ('new')}>New</h3>
-                  <h3 onClick={() => filtercate ('featured')}>Featured</h3>
-                  <h3 onClick={() => filtercate ('top')}>top selling</h3>
-                </div>
+                {categories.map((category) => (
+                  <h3 key={category.id} onClick={() => filtercate(category.name)}>
+                    {category.name}
+                  </h3>
+                ))}
+              </div>
               </div>
               <div className='products'>
                 <div className='container'>
                   {
-                    trendingProduct.map((curElm) => 
+                    trendingProduct.map((product) => 
                     {
                       return(
                         <>
                         <div className='box'>
                           <div className='img_box'>
-                            <img src={curElm.image} alt=''></img>
+                            <img src={product.image} alt='' />
                             <div className='icon'>
                               <div className='icon_box'>
                                 <AiFillEye />
@@ -97,9 +94,9 @@ const Home = ({addtocart}) => {
                             </div>
                           </div>
                           <div className='info'>
-                            <h3>{curElm.Name}</h3>
-                            <p>${curElm.price}</p>
-                            <button className='btn' onClick={() => addtocart (curElm)}>Add to cart</button>
+                            <h3>{product.Name}</h3>
+                            <p>${product.price}</p>
+                            <button className='btn' onClick={() => addtocart (product)}>Add to cart</button>
                           </div>
                         </div>
                         </>
@@ -183,21 +180,21 @@ const Home = ({addtocart}) => {
                 <h2>New Product</h2>
               </div>
               {
-                newProduct.map((curElm) => 
+                newProduct.map((product) => 
                 {
                   return(
                     <>
                     <div className='productbox'>
                       <div className='img-box'>
-                        <img src={curElm.image} alt=''></img>
+                        <img src={product.image} alt=''></img>
                       </div>
                       <div className='detail'>
-                        <h3>{curElm.Name}</h3>
-                        <p>$ {curElm.price}</p>
+                        <h3>{product.Name}</h3>
+                        <p>$ {product.price}</p>
                         <div className='icon'>
                           <button><AiFillEye /></button>
                           <button><AiFillHeart /></button>
-                          <button onClick={() => addtocart (curElm)}><AiOutlineShoppingCart /></button>
+                          <button onClick={() => addtocart (product)}><AiOutlineShoppingCart /></button>
                         </div>
                       </div>
                     </div>
@@ -211,21 +208,21 @@ const Home = ({addtocart}) => {
                 <h2>Featured Product</h2>
               </div>
               {
-                featuredProduct.map((curElm) => 
+                featuredProduct.map((product) => 
                 {
                   return(
                     <>
                     <div className='productbox'>
                       <div className='img-box'>
-                        <img src={curElm.image} alt=''></img>
+                        <img src={product.image} alt=''></img>
                       </div>
                       <div className='detail'>
-                        <h3>{curElm.Name}</h3>
-                        <p>$ {curElm.price}</p>
+                        <h3>{product.Name}</h3>
+                        <p>$ {product.price}</p>
                         <div className='icon'>
                           <button><AiFillEye /></button>
                           <button><AiFillHeart /></button>
-                          <button onClick={() => addtocart (curElm)}><AiOutlineShoppingCart /></button>
+                          <button onClick={() => addtocart (product)}><AiOutlineShoppingCart /></button>
                         </div>
                       </div>
                     </div>
@@ -239,21 +236,21 @@ const Home = ({addtocart}) => {
                 <h2>Top Product</h2>
               </div>
               {
-                topProduct.map((curElm) => 
+                topProduct.map((product) => 
                 {
                   return(
                     <>
                     <div className='productbox'>
                       <div className='img-box'>
-                        <img src={curElm.image} alt=''></img>
+                        <img src={product.image} alt=''></img>
                       </div>
                       <div className='detail'>
-                        <h3>{curElm.Name}</h3>
-                        <p>$ {curElm.price}</p>
+                        <h3>{product.Name}</h3>
+                        <p>$ {product.price}</p>
                         <div className='icon'>
                           <button><AiFillEye /></button>
                           <button><AiFillHeart /></button>
-                          <button onClick={() => addtocart (curElm)}><AiOutlineShoppingCart /></button>
+                          <button onClick={() => addtocart (product)}><AiOutlineShoppingCart /></button>
                         </div>
                       </div>
                     </div>
