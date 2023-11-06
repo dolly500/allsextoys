@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useState, useEffect  } from 'react'
 import './shop.css'
 import { AiFillHeart, AiFillEye, AiOutlineClose} from 'react-icons/ai';
-const Shop = ({shop, Filter, allcatefilter, addtocart}) => {
+import axios from 'axios';
+
+
+const Shop = ({addtocart}) => {
     // Toggle Product Detail
     const [showDetail, setShowDetail] = useState(false)
-    // Detail Page Data
+    const [searchQuery, setSearchQuery] = useState('');
+    const [sortOrder, setSortOrder] = useState('asc');
+    
     const [detail, setDetail] = useState([])
-    //Showing Detail Box
+    const [shop, setShop] = useState([]);
+    //Showing Detail Box        
     const detailpage = (product) => 
     {
         const detaildata = ([{product}])
@@ -19,8 +26,49 @@ const Shop = ({shop, Filter, allcatefilter, addtocart}) => {
     {
         setShowDetail(false)
     }
+
+    useEffect(() => {
+        // Make a GET request to fetch shop data using Axios
+        axios
+          .get('') // Replace with your actual API endpoint
+          .then((response) => {
+            const shopData = response.data;
+            setShop(shopData);
+          })
+          .catch((error) => {
+            console.error('Error fetching shop data:', error);
+          });
+      }, []);
+
+        // Filter the products based on the search query and sort by name
+  const filteredShop = shop
+  .filter((product) => product.Name.toLowerCase().includes(searchQuery.toLowerCase()))
+  .sort((a, b) => {
+    if (sortOrder === 'asc') {
+      return a.Name.localeCompare(b.Name);
+    } else {
+      return b.Name.localeCompare(a.Name);
+    }
+  });
+
   return (
     <>
+       <div className="search-bar">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="asc">Sort A to Z</option>
+          <option value="desc">Sort Z to A</option>
+        </select>
+      </div>
+
     {
         showDetail ? 
         <>
@@ -43,33 +91,9 @@ const Shop = ({shop, Filter, allcatefilter, addtocart}) => {
         : null
     }
     <div className='shop'>
-        <h2>shop</h2>
+        <h2>Products</h2>
         <p>Home . shop</p>
         <div className='container'>
-            <div className='left_box'>
-                <div className='category'>
-                    <div className='header'>
-                        <h3>all categories</h3>
-                    </div>
-                    <div className='box'>
-                        <ul>
-                            <li onClick={() => allcatefilter ()}># All</li>
-                            <li onClick={() => Filter ("tv")}>#Primary Categories</li>
-                            <li onClick={() => Filter ("laptop")}># Secondary Categories</li>
-                            <li onClick={() => Filter ("watch")}># Others</li>
-                            {/* <li onClick={() => Filter ("speaker")}># speaker</li>
-                            <li onClick={() => Filter ("electronics")}># electronics</li>
-                            <li onClick={() => Filter ("headphone")}># headphone</li>
-                            <li onClick={() => Filter ("phone")}># phone</li> */}
-                        </ul>
-                    </div>
-                </div>
-                <div className='banner'>
-                    <div className='img_box'>
-                        <img src='image/shop_left.avif' alt=''></img>
-                    </div>
-                </div>
-            </div>
             <div className='right_box'>
                 <div className='banner'>
                     <div className='img_box'>
@@ -80,22 +104,22 @@ const Shop = ({shop, Filter, allcatefilter, addtocart}) => {
                     <h2>Shop Product</h2>
                     <div className='product_container'>
                         {
-                            shop.map((curElm) => 
+                            filteredShop.map((product) => 
                             {
                                 return(
                                     <>
                                     <div className='box'>
                                         <div className='img_box'>
-                                            <img src={curElm.image} alt=''></img>
+                                            <img src={product.image} alt=''></img>
                                             <div className='icon'>
                                                <li><AiFillHeart /></li> 
-                                               <li onClick={() => detailpage (curElm)}><AiFillEye /></li> 
+                                               <li onClick={() => detailpage (product)}><AiFillEye /></li> 
                                             </div>
                                         </div>
                                         <div className='detail'>
-                                            <h3>{curElm.Name}</h3>
-                                            <p>$ {curElm.price}</p>
-                                            <button onClick={() => addtocart (curElm)}>Add To Cart</button>
+                                            <h3>{product.Name}</h3>
+                                            <p>$ {product.price}</p>
+                                            <button onClick={() => addtocart (product)}>Add To Cart</button>
                                         </div>
                                     </div>
                                     </>

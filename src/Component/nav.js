@@ -78,12 +78,13 @@ const Nav = ({search, setSearch, searchproduct}) => {
           </div>
           <div className='nav'>
             <ul>
-              <li><Link to='/' className='link'>Shop</Link></li>
-              <li><Link to='/shop' className='link'>Categories</Link></li>
+              {/* <li><Link to='/' className='link'>Home</Link></li> */}
+              <li><Link to='/shop' className='link'>Products</Link></li>
+              <li><Link to='/categories' className='link'>Shop</Link></li>
               <li><Link to='/allcategories' className='link'>All Categories</Link></li>
               <li><Link to='/cart' className='link'>Cart</Link></li>
-              <li><Link to='/contact' className='link'>Contact</Link></li>
               <li><Link to='/livechat' className='link'>Live Chat</Link></li>
+              <li><Link to='/contact' className='link'>Contact</Link></li>
             </ul>
           </div>
           <div className='offer'>

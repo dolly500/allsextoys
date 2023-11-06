@@ -298,3 +298,39 @@
     font-weight: 600;
     cursor: pointer;
 }
+
+/* Add these styles to your shop.css file */
+.search-bar {
+    margin: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 300px;
+    outline: none;
+  }
+  
+  select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  /* Style the dropdown arrow */
+  select::-ms-expand {
+    display: none;
+  }
+  
+  /* Add more styles as needed */
+  

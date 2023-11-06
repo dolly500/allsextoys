@@ -1,0 +1,33 @@
+.product-card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 16px;
+    margin: 16px;
+    max-width: 250px;
+    height: 39vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .product-card h2 {
+    font-size: 18px;
+    margin-top: 8px;
+  }
+
+  .product-card .middle{
+    margin-top: 40px;
+    text-align: center;
+  }
+  
+  .product-card p {
+    margin-top: 8px;
+    color: #666;
+  }
+  
+  .product-card a {
+    text-decoration: none;
+    color: #007bff;
+    display: block;
+    margin-top: 8px;
+  }
+  
