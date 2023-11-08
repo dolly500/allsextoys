@@ -12,7 +12,8 @@ const Shop = ({addtocart}) => {
     const [sortOrder, setSortOrder] = useState('asc');
     
     const [detail, setDetail] = useState([])
-    const [shop, setShop] = useState([]);
+    
+
     //Showing Detail Box        
     const detailpage = (product) => 
     {
@@ -41,6 +42,7 @@ const Shop = ({addtocart}) => {
       }, []);
 
         // Filter the products based on the search query and sort by name
+        const [shop, setShop] = useState([]);
   const filteredShop = shop
   .filter((product) => product.Name.toLowerCase().includes(searchQuery.toLowerCase()))
   .sort((a, b) => {

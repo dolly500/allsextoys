@@ -2,6 +2,8 @@ import React from 'react'
 import './cart.css'
 import { Link } from 'react-router-dom'
 import { AiOutlineClose } from 'react-icons/ai';
+
+
 const Cart = ({cart, setCart}) => {
 
   // Increase Quantity of cart product

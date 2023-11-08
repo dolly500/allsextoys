@@ -20,7 +20,7 @@ const Rout = ({shop, addtocart, cart, setCart}) => {
         <Route path='/allcategories' element={<Allcategories />} />
         <Route path='/livechat' element={<LiveChat />} />
         <Route path='/contact' element={<Contact />} />
-        <Route path='/categories' element={<Categories />} />
+        <Route path='/categories' element={<Categories addtocart={addtocart} />} />
     </Routes>
     </>
   )
